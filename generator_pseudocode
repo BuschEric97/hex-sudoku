@@ -1,0 +1,37 @@
+// returns 0 if no solutions, 1 if 1 solution, and 2 if many solutions
+checkNumberOfSolutions(board: NxN 2D array):
+    if board has errors:
+        return 0
+    if board is full:
+        return 1
+    cell := earliest empty cell in board
+    sols := 0
+    for each number in sudoku puzzle:
+        newBoard := board with cell set to number
+        sols += checkNumberOfSolutions(newBoard)
+        if sols > 1:
+            return 2
+
+// generates a valid unique sudoku board with no empty cells
+GenerateFullValidBoard(N: integer):
+    board := empty board of size NxN
+    while board not empty:
+        cell := random free cell on board
+        num := random valid number for cell
+        set cell and num on board
+        sols := checkNumberOfSolutions(board)
+        if sols == 0:
+            set cell back to empty
+    return board
+
+// generates a valid unique sudoku board with minimum hints
+GenerateValidBoard(N: integer):
+    board := GenerateFullValidBoard(N)
+    cellPos := array of all cell positions in board
+    while cellPos not empty:
+        cell := next item in cellPos
+        set cell on board to empty
+        sols := checkNumberOfSolutions(board)
+        if sols > 1:
+            set cell on board back to previous number
+    return board
